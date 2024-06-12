@@ -52,7 +52,35 @@ void receiverThread() {
             case ACKPARTY:
                 //std::cout << rank <<": Dostalem potwierdzenie od " << msg.id << std::endl;
                 ackCount--;
+            case TAKINGYOU:
+                message = TAKINGYOU;
+                //sendMessage(rank, message, )
+                //TODO sending messages MPi_PAck
+
+            case TAKINGTHEM:
+
+                //TODO sending messages MPi_PAck
+
+            case REQMEADOW:
+                ;
+
+            case ACKMEADOW:
+                ;
+
+            case REQALC:
+                ;
+
+            case ACKALC:
+                ;
+
+            case PARTYHARD:
+                ;
+
+            case PARTYOVER:
+                ;
+
         }
+
     }
 }
  
@@ -110,30 +138,30 @@ void *mainLoop(void *ptr) {
                     } //TODO: invited should be changed when TAKINGYOU is received 
                 }
  
-            case WAITGROUP: {
-                std::vector<Message> inviteList;
-                int inviteCount = 0;
-                for (Message animal : partyQueue) {
-                    if (inviteCount + (animal.id < BUNNY ? 1 : 4) <= MEADOWSIZE) {
-                        inviteCount += (animal.id < BUNNY ? 1 : 4);
-                        inviteList.push_back(animal);
-                    }
-                    if (inviteCount == MEADOWSIZE) {
-                        for (Message invitation : partyQueue) {
-                            if (std::find(inviteList.begin(), inviteList.end(), invitation) != inviteList.end()) {
-                                message_t message = TAKINGYOU;
-                                sendMessage(rank, message, invitation.id, lamport);
-                            }
-                            else {
-                                message_t message = TAKINGTHEM;
-                                sendMessage(rank, message, invitation.id, lamport);
-                            }
-                        }
-                        state = WAITMEADOWHOST;
-                        break;
-                    }
-                }
-            }
+            // case WAITGROUP: {
+            //     std::vector<Message> inviteList;
+            //     int inviteCount = 0;
+            //     for (Message animal : partyQueue) {
+            //         if (inviteCount + (animal.id < BUNNY ? 1 : 4) <= MEADOWSIZE) {
+            //             inviteCount += (animal.id < BUNNY ? 1 : 4);
+            //             inviteList.push_back(animal);
+            //         }
+            //         if (inviteCount == MEADOWSIZE) {
+            //             for (Message invitation : partyQueue) {
+            //                 if (std::find(inviteList.begin(), inviteList.end(), invitation) != inviteList.end()) {
+            //                     message_t message = TAKINGYOU;
+            //                     sendMessage(rank, message, invitation.id, lamport);
+            //                 }
+            //                 else {
+            //                     message_t message = TAKINGTHEM;
+            //                     sendMessage(rank, message, invitation.id, lamport);
+            //                 }
+            //             }
+            //             state = WAITMEADOWHOST;
+            //             break;
+            //         }
+            //     }
+            // }
  
             case WAITMEADOW:
                 sleep(1);
