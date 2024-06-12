@@ -33,10 +33,10 @@ extern message_t message;
  
 extern int BUNNY;
 extern int BEAR;
-extern int* MEADOW;
+//extern int* MEADOW;
 extern int MEADOWSIZE;
  
- 
+extern std::vector<bool> MEADOWS
 extern int rank;
 extern int size;
 extern pthread_t threadAnimal;
