@@ -3,6 +3,8 @@
  
 int BUNNY = 9;
 int BEAR = 1;
+int MEADOWSIZE = 5;
+ 
  
 int rank, size;
  

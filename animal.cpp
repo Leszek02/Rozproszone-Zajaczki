@@ -3,12 +3,14 @@
  
 pthread_mutex_t recvMut = PTHREAD_MUTEX_INITIALIZER;
 state_t state = REST;
-std::vector<Message> partyQueue;
 std::mutex mutexQueue;
 int perc = 0;
 int lamport = 0;
 int animals = BUNNY + BEAR;
 int ackCount = 0;
+int invited = 0;
+ 
+std::set<Message, cmp> partyQueue;
  
 void initRandom() {
     unsigned int seed = static_cast<unsigned int>(std::time(nullptr)) * getpid();
@@ -32,8 +34,7 @@ bool compare(const Message& a, const Message& b) {
  
 void insertQueue(const Message newAnimal) {
     std::unique_lock<std::mutex> lock(mutexQueue);
-    partyQueue.push_back(newAnimal);
-    std::sort(partyQueue.begin(), partyQueue.end(), compare);
+    partyQueue.insert(newAnimal);
 }
  
 void receiverThread() {
@@ -84,24 +85,64 @@ void *mainLoop(void *ptr) {
                 else {
                     //std::cout << "Jestem " << (rank < BUNNY ? "zajacem" : "misiem") << " i wylosowalem liczbe: " << perc << std::endl;
                     sleep(rank + 1 + animals);
-                    for (int i = 0; i < animals; i++) {
-                        std::cout << partyQueue[i].id << "  ";
+                    for (Message temp : partyQueue) {
+                        std::cout << temp.id << "  ";
                     }
                     std::cout << std::endl;
                     while(1) { }
                     //TODO: Think what to do if someone is not partying (I guess sleep for a few seconds?)
                 }
             case WAITHOST:
-                while (ackCount > 0) {
-                    //TODO: check if I'm the host of the party
-                }
+                while (ackCount > 0) {}
                 std::cout << rank << ": dostalem potwierdzenie od wszystkich POG" << std::endl;
                 sleep(rank + 1);
-                for (int i = 0; i < animals; i++) {
-                    std::cout << partyQueue[i].id << "  ";
-                }
+                for (Message temp : partyQueue) {
+                        std::cout << temp.id << "  ";
+                    }
                 std::cout << std::endl;
-                while(1){}
+                if (partyQueue.begin()->id == rank) {
+                    state = WAITGROUP;
+                }
+                else {
+                    while (!invited) {
+                        state = WAITMEADOW;
+                        break;
+                    } //TODO: invited should be changed when TAKINGYOU is received 
+                }
+ 
+            case WAITGROUP: {
+                std::vector<Message> inviteList;
+                int inviteCount = 0;
+                for (Message animal : partyQueue) {
+                    if (inviteCount + (animal.id < BUNNY ? 1 : 4) <= MEADOWSIZE) {
+                        inviteCount += (animal.id < BUNNY ? 1 : 4);
+                        inviteList.push_back(animal);
+                    }
+                    if (inviteCount == MEADOWSIZE) {
+                        for (Message invitation : partyQueue) {
+                            if (std::find(inviteList.begin(), inviteList.end(), invitation) != inviteList.end()) {
+                                message_t message = TAKINGYOU;
+                                sendMessage(rank, message, invitation.id, lamport);
+                            }
+                            else {
+                                message_t message = TAKINGTHEM;
+                                sendMessage(rank, message, invitation.id, lamport);
+                            }
+                        }
+                        state = WAITMEADOWHOST;
+                        break;
+                    }
+                }
+            }
+ 
+            case WAITMEADOW:
+                sleep(1);
+ 
+            case WAITMEADOWHOST:
+                sleep(1);
+ 
+            case PARTY:
+                sleep(1);
         }
     }
 }
