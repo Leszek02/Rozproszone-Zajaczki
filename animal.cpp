@@ -59,14 +59,35 @@ void receiverThread() {
             case ACKPARTY:
                 //std::cout << rank <<": Dostalem potwierdzenie od " << msg.id << std::endl;
                 ackCount--;
-                break;
+
             case TAKINGYOU:
-                std::cout << "Obsluga TAKINGYOU dla id: " << rank << std::endl;
-                break;
+                message = TAKINGYOU;
+                //sendMessage(rank, message, )
+                //TODO sending messages MPi_PAck
+
             case TAKINGTHEM:
-                std::cout << "Obsluga TAKINGTHEM dla id: " << rank << std::endl;
-                break;
+
+                //TODO sending messages MPi_PAck
+
+            case REQMEADOW:
+                ;
+
+            case ACKMEADOW:
+                ;
+
+            case REQALC:
+                ;
+
+            case ACKALC:
+                ;
+
+            case PARTYHARD:
+                ;
+
+            case PARTYOVER:
+                ;
         }
+
     }
 }
  

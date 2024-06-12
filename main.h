@@ -20,6 +20,7 @@ extern message_t message;
 #ifndef MAINH
 #define MAINH
 #include <mpi.h>
+#include <iostream>
 #include <stdio.h>
 #include <unistd.h>
 #include <thread>

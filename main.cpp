@@ -4,6 +4,8 @@
 int BUNNY = 9;
 int BEAR = 1;
 int MEADOWSIZE = 5;
+int MEADOWCOUNT = 3;
+std::vector<bool> meadows;
  
  
 int rank, size;
@@ -11,6 +13,34 @@ int rank, size;
 pthread_t threadAnimal;
 pthread_mutex_t stateMut;
 MPI_Datatype MPI_PAKIET_T;
+
+
+void initMeadows(std::vector<bool> meadows){
+    for (int i =0; i < MEADOWCOUNT; i++){
+        meadows[i] = false;
+    }
+}
+
+void takeMeadow(int i, std::vector<bool> meadows){
+    meadows[i] == true;
+}
+
+int getIndexOfEmptyMeadow(std::vector<bool> meadows){
+    for (int i =0; i < MEADOWCOUNT; i++){
+        if (meadows[i] == false){
+            takeMeadow(i, meadows);
+            return i;
+        };
+    }
+    return -1;
+}
+
+
+
+void releaseMeadow(int i, std::vector<bool> meadows){
+    meadows[i] == false;
+}
+
  
 void finalizuj() {
     pthread_mutex_destroy( &stateMut);
