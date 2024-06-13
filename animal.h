@@ -3,7 +3,7 @@
  
 extern int lamport;
 extern int ackCount;
-extern int invited;
+extern bool invited;
  
 void *mainLoop(void *ptr);
  
