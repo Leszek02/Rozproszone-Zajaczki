@@ -9,6 +9,7 @@ int perc = 0;
 int lamport = 0;
 int animals = BUNNY + BEAR;
 int ackCount = 0;
+int ackMead = 0;
 int invited = 0;
 int meadowCapacity = 4;
 //int MEADOWCOUNT = 3;
@@ -143,6 +144,21 @@ void receiverThread() {
                 std::cout << "Obsluga TAKINGTHEM dla id: " << rank << std::endl;
                 updateQueue();
                 break;
+            case REQMEADOW:
+                std::cout << "dajcie polane " << std::endl;
+            case ACKMEADOW:
+                std::cout << "macie polane " << std::endl;
+            case REQALC:
+                message = REQALC;
+                sendMessage(rank, message, msg.id, lamport);
+            case ACKALC:
+                std::cout << "masz alko" << std::endl;
+            case PARTYHARD:
+                state = PARTY;
+
+            case PARTYOVER:
+                state = REST;
+
         }
     }
 }
