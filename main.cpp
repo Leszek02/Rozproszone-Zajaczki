@@ -4,8 +4,6 @@
 int BUNNY = 9;
 int BEAR = 1;
 int MEADOWSIZE = 5;
-int MEADOWCOUNT = 3;
-std::vector<bool> meadows = MEADOWS;
  
  
 int rank, size;
@@ -13,7 +11,6 @@ int rank, size;
 pthread_t threadAnimal;
 pthread_mutex_t stateMut;
 MPI_Datatype MPI_PAKIET_T;
-
  
 void finalizuj() {
     pthread_mutex_destroy( &stateMut);

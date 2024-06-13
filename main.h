@@ -1,7 +1,6 @@
 #ifndef MAINH
 #define MAINH
 #include <mpi.h>
-#include <iostream>
 #include <stdio.h>
 #include <unistd.h>
 #include <thread>
@@ -11,13 +10,14 @@
 #include <vector>
 #include <algorithm>
 #include <set>
+#include <iostream>
  
 extern int BUNNY;
 extern int BEAR;
 //extern int* MEADOW;
 extern int MEADOWSIZE;
+extern int MEADOWCOUNT;
  
-extern std::vector<bool> MEADOWS
 extern int rank;
 extern int size;
 extern pthread_t threadAnimal;
@@ -29,8 +29,13 @@ typedef struct {
     int lamport;
 } Message;
  
+extern std::vector<Message> inviteList;
+extern std::vector<bool> meadows;
+ 
+extern bool operator== (const Message &a, const Message &b); 
+ 
 struct cmp {
-    bool operator() (const Message &a, const Message &b) const {
+    bool operator() (const Message a, const Message b) const {
             if(a.id == b.id) {
         return b.lamport > a.lamport;
         }

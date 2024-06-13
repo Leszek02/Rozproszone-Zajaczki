@@ -10,7 +10,7 @@ void *mainLoop(void *ptr);
 typedef enum {REST, WAITHOST, WAITGROUP, WAITMEADOW, WAITMEADOWHOST, PARTY} state_t;
 extern state_t state;
  
-typedef enum {REQPARTY, ACKPARTY, REQMEADOW, ACKMEADOW, REQALC, ACKALC, TAKINGYOU, TAKINGTHEM, PARTYHARD, PARTYOVER} message_t;
+typedef enum {REQPARTY, ACKPARTY, REQMEADOW, ACKMEADOW, REQALC, TAKINGYOU, TAKINGTHEM, PARTYHARD, PARTYOVER} message_t;
 extern message_t message;
  
  
